@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import BitAuth from './auth';
 import headers from '../helpers/datafile';
-import { BlockResult } from '../interfaces/blocks';
-import { UTXO } from '../interfaces/transactions';
 
 export default class Blocks extends BitAuth {
     getBlockchainInfo(): Promise<AxiosResponse> {
@@ -27,7 +25,7 @@ export default class Blocks extends BitAuth {
         return axios.post(this.url, body, headers);
     }
 
-    getBlock(blockHash: string): Promise<BlockResult> {
+    getBlock(blockHash: string): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',
@@ -38,7 +36,7 @@ export default class Blocks extends BitAuth {
         return axios.post(this.url, body, headers);
     }
 
-    listUnspent(): Promise<UTXO> {
+    listUnspent(): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',

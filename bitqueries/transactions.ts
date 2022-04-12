@@ -1,44 +1,31 @@
 import axios, { AxiosResponse } from 'axios';
 import BitAuth from './auth';
 import headers from '../helpers/datafile';
-import { BlockResult } from '../interfaces/blocks';
-import { UTXO } from '../interfaces/transactions';
 
-export default class Blocks extends BitAuth {
-    getBlockchainInfo(): Promise<AxiosResponse> {
+export default class Transactions extends BitAuth {
+    getTransaction(transactionId: string): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',
-            method: 'getblockchaininfo',
-            params: [],
+            method: 'gettransaction',
+            params: [transactionId],
         };
 
-        return axios.post(this.url, body, headers);
+        return axios.post(this.url, body, headers );
     }
 
-    getBlockHash(block: number): Promise<AxiosResponse> {
+    decodeRawTransaction(transactionHex: symbol): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',
-            method: 'getblockhash',
-            params: [block],
+            method: 'decoderawtransaction',
+            params: [transactionHex],
         };
 
-        return axios.post(this.url, body, headers);
+        return axios.post(this.url, body, headers );
     }
 
-    getBlock(blockHash: string): Promise<BlockResult> {
-        const body = {
-            jsonrpc: '1.0',
-            id: 'curltext',
-            method: 'getblock',
-            params: [blockHash],
-        };
-
-        return axios.post(this.url, body, headers);
-    }
-
-    listUnspent(): Promise<UTXO> {
+    listUnspent(): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',
