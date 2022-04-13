@@ -1,11 +1,15 @@
 export default class Auth {
     user: string | undefined;
     pass: string | undefined;
+    rpcurl: string | undefined;
+    port: number | undefined;
     url: string;
 
-    constructor(user: string | undefined, pass: string | undefined) {
+    constructor(user: string | undefined, pass: string | undefined, rpcurl: string | undefined, port: number | undefined) {
         this.user = user;
         this.pass = pass;
-        this.url = `http://${user}:${pass}@127.0.0.1:18443/`;
+        this.rpcurl = rpcurl;
+        this.port = port;
+        this.url = `http://${user}:${pass}@${rpcurl}:${port}/`;
     }
 }
