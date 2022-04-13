@@ -3,7 +3,7 @@ import BitAuth from './auth';
 import headers from '../helpers/datafile';
 
 export default class Transactions extends BitAuth {
-    getTransaction(transactionId: string): Promise<AxiosResponse> {
+    getTransaction(transactionId: string, wallet: string): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',
@@ -11,7 +11,7 @@ export default class Transactions extends BitAuth {
             params: [transactionId],
         };
 
-        return axios.post(this.url, body, headers );
+        return axios.post(`${this.url}wallet/${wallet}`, body, headers );
     }
 
     decodeRawTransaction(transactionHex: symbol): Promise<AxiosResponse> {

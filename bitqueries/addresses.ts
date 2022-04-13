@@ -3,12 +3,12 @@ import BitAuth from './auth';
 import headers from '../helpers/datafile';
 
 export default class Addresses extends BitAuth { 
-    getWalletBalance(wallet: string): Promise<AxiosResponse> {
+    getNewAddress(label: string, type: string, wallet: string): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',
-            method: 'getbalance',
-            params: [],
+            method: 'getnewaddress',
+            params: [label, type],
         };
 
         return axios.post(`${this.url}wallet/${wallet}`, body, headers);

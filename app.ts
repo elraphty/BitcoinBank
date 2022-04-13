@@ -1,21 +1,11 @@
 import express, { Application, Response, Request, NextFunction } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import BitRpc from './bitqueries';
+import bitrpc from './bitqueries';
 import { AxiosResponse } from 'axios';
-import dotenv from 'dotenv';
 import { BlockResult } from './interfaces/blocks';
 
-dotenv.config();
-
-const USER = process?.env.RPC_USER;
-const PASS = process?.env.RPC_PASS;
-const RPCPORT = process?.env.RPC_PORT;
-const RPCURL = process?.env.RPC_URL;
-
-const bitrpc = new BitRpc(USER, PASS, RPCURL, Number(RPCPORT));
-
-// bitrpc.getWalletBalance('testwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
+// bitrpc.getWalletBalance('raphwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
 
 // bitrpc.getBlockHash(1).then((res: AxiosResponse) => console.log('Get Block Hash Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
 
@@ -25,6 +15,20 @@ const bitrpc = new BitRpc(USER, PASS, RPCURL, Number(RPCPORT));
 //         console.log('Get Block Result ===', result)
 //     })
 //     .catch(e => console.log('Get Blockhash Errror', e.message));
+
+// bitrpc.getTransaction('dedbbdcf5c73eaf4fb5e2e1be8a9b8a719cc117f004aa6d3aa9385d3359e203e', 'raphwallet')
+//     .then((res: AxiosResponse) => {
+//         const result: BlockResult = res.data.result;
+//         console.log('Get Transaction Result ===', result)
+//     })
+//     .catch(e => console.log('Get Transaction Errror', e.message));
+
+// bitrpc.getNewAddress('p2sh', 'bech32', 'raphwallet')
+//     .then((res: AxiosResponse) => {
+//         const result: BlockResult = res.data.result;
+//         console.log('Get Address Result ===', result)
+//     })
+//     .catch(e => console.log('Get Address Errror', e.message));
 
 const app: Application = express();
 
