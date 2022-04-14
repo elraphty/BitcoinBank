@@ -1,6 +1,7 @@
 import express, { Application, Response, Request, NextFunction } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import routes from './routes';
 import bitrpc from './bitqueries';
 import { AxiosResponse } from 'axios';
 import { BlockResult } from './interfaces/blocks';
@@ -36,6 +37,9 @@ const app: Application = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Router files
+app.use('/', routes);
 
 // Error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
