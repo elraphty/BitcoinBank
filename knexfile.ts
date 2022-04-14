@@ -10,7 +10,7 @@ export const development: Knex.Config = {
         host: '127.0.0.1',
         user: process.env.DEV_DB_USER,
         password: process.env.DEV_DB_PASS,
-        database: 'bitcoinwallet'
+        database: 'bitcoinbank'
     },
     migrations: {
         directory: path.join(__dirname, '/db/migrations')
@@ -26,7 +26,7 @@ export const test: Knex.Config = {
         host: '127.0.0.1',
         user: process.env.TEST_DB_USER,
         password: process.env.TEST_DB_PASS,
-        database: 'bitcoinwallet'
+        database: 'bitcoinbank'
     },
     migrations: {
         directory: path.join(__dirname, '/db/migrations')
