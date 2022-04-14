@@ -2,6 +2,7 @@ import express, { Application, Response, Request, NextFunction } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import { walletCheck } from './services/wallet';
 import bitrpc from './bitqueries';
 import { AxiosResponse } from 'axios';
 import { BlockResult } from './interfaces/blocks';
@@ -30,6 +31,8 @@ import { BlockResult } from './interfaces/blocks';
 //         console.log('Get Address Result ===', result)
 //     })
 //     .catch(e => console.log('Get Address Errror', e.message));
+
+walletCheck();
 
 const app: Application = express();
 

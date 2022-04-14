@@ -53,7 +53,10 @@ export default class QueryBase extends Auth {
     /** End Of Transaction Queries */
 
     /** Wallet Queries */
-    listWallets(name: string): Promise<AxiosResponse> {
+    createWallet(name: string): Promise<AxiosResponse> {
+        return this.wallet.createWallet(name);  
+    }
+    listWallets(): Promise<AxiosResponse> {
         return this.wallet.listWallets();
     }
     getWalletBalance(name: string): Promise<AxiosResponse> {
