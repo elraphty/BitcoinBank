@@ -5,6 +5,7 @@ import Blockchain from "./blockchain";
 import Transactions from "./transactions";
 import Wallet from "./wallet";
 import { AxiosResponse } from "axios";
+import { addressType } from "../interfaces/addresses";
 
 export default class QueryBase extends Auth {
     blocks: Blocks;
@@ -29,7 +30,7 @@ export default class QueryBase extends Auth {
     }
 
     /** Address Queries */
-    getNewAddress(label: string, type: string, wallet: string): Promise<AxiosResponse> {
+    getNewAddress(label: string, type: addressType, wallet: string): Promise<AxiosResponse> {
         return this.address.getNewAddress(label, type, wallet);
     }
     /** End Of Address Queries */

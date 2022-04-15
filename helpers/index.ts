@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ValidationError } from "express-validator";
-import { DataResponse, ErrorResponse, ErrorValidationResponse } from "../interfaces/db";
+import { DataResponse, ErrorResponse, ErrorValidationResponse } from "../interfaces";
 
 export const responseSuccess = (res: Response, status: number, msg: string, data: any): Response => {
     const result: DataResponse = {

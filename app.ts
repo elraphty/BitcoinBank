@@ -6,6 +6,10 @@ import { walletCheck } from './services/wallet';
 import bitrpc from './bitqueries';
 import { AxiosResponse } from 'axios';
 import { BlockResult } from './interfaces/blocks';
+import { addressType } from './interfaces/addresses';
+import { responseError } from './helpers';
+
+walletCheck();
 
 // bitrpc.getWalletBalance('raphwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
 
@@ -25,14 +29,12 @@ import { BlockResult } from './interfaces/blocks';
 //     })
 //     .catch(e => console.log('Get Transaction Errror', e.message));
 
-// bitrpc.getNewAddress('p2sh', 'bech32', 'raphwallet')
+// bitrpc.getNewAddress('user', addressType['bech32'], 'hotwallet')
 //     .then((res: AxiosResponse) => {
 //         const result: BlockResult = res.data.result;
 //         console.log('Get Address Result ===', result)
 //     })
 //     .catch(e => console.log('Get Address Errror', e.message));
-
-walletCheck();
 
 const app: Application = express();
 
@@ -50,7 +52,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
         res.locals.message = err.message;
         res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-        // responseError(res, 500, err.message);
+        responseError(res, 500, err.message);
     }
 });
 

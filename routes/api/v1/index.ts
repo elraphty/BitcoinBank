@@ -4,8 +4,8 @@ import user from './user';
 
 const router: Router = express.Router();
 
-router.use('/wallet', wallet);
-
 router.use('/user', user);
+
+router.use('/wallet', wallet);
 
 export default router;
