@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import knex from '../db';
 import { validationResult } from 'express-validator';
-import { User, UserAddress } from '../interfaces/db';
+import { User, UserAddress, UserBalance } from '../interfaces/db';
 import { responseSuccess, responseErrorValidation, responseError } from '../helpers';
 import { hashPassword } from '../helpers/password';
 import bitqueries from '../bitqueries';
@@ -35,8 +35,9 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
         if (userId.length > 0) {
             // Create user address
-            const id = userId[0].id
+            const id = userId[0].id;
             await knex<UserAddress>('useraddresses').insert({ userid: id, receiveaddress: address });
+            await knex<UserBalance>('usersbalance').insert({ userid: id, amount: 0 });
         }
 
         responseSuccess(res, 200, 'Successfully created user', {});

@@ -9,3 +9,8 @@ export interface UserAddress {
     userid: number;
     receiveaddress: string;
 }
+export interface UserBalance {
+    id?: number;
+    userid: number;
+    amount: number;
+}
