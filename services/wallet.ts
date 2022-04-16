@@ -6,11 +6,13 @@ export const walletCheck = async () => {
     const res: AxiosResponse = await bitrpc.listWallets();
     const wallets: string[] = res.data.result;
 
+    console.log('Wallets ===', wallets);
+
     // If the wallets is greater than 2 do nothing
     if(wallets.length >= 2) {}
     // if the wallet is 1 create one more wallet else create 2 wallets
     else if (wallets.length === 1) {
-        bitrpc.createWallet('hotwallet');
+        bitrpc.createWallet('coldwallet');
     } else {
         const reqs: Promise<AxiosResponse>[] = [];
         for(let i = 0; i < 2; i++) {

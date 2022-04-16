@@ -9,7 +9,7 @@ import { BlockResult } from './interfaces/blocks';
 import { addressType } from './interfaces/addresses';
 import { responseError } from './helpers';
 
-walletCheck();
+// walletCheck();
 
 // bitrpc.getWalletBalance('raphwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
 

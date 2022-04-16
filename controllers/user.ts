@@ -3,9 +3,10 @@ import knex from '../db';
 import { validationResult } from 'express-validator';
 import { User, UserAddress, UserBalance } from '../interfaces/db';
 import { responseSuccess, responseErrorValidation, responseError } from '../helpers';
-import { hashPassword } from '../helpers/password';
+import { hashPassword, verifyPassword } from '../helpers/password';
 import bitqueries from '../bitqueries';
 import { addressType } from '../interfaces/addresses';
+import { signUser } from '../helpers/jwt';
 
 // Controller for registering user
 export const registerUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
@@ -41,6 +42,43 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         }
 
         responseSuccess(res, 200, 'Successfully created user', {});
+    } catch (err) {
+        next(err);
+    }
+};
+
+// Controller for user login
+export const userLogin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        // Finds the validation errors in this request and wraps them in an object with handy functions
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return responseErrorValidation(res, 400, errors.array());
+        }
+
+        const username: string = req.body.username;
+        const pass: string = req.body.password;
+
+        const users: User[] = await knex<User>('users').where({ username });
+
+        if (users.length > 0) {
+            let user = users[0];
+            if (!verifyPassword(pass, user.password)) {
+                return responseError(res, 404, 'Incorrect password');
+            }
+
+            // // delete user password and pk
+            delete user.password;
+
+            const token = signUser(user);
+
+            // Add token to user object
+            user.token = token;
+
+            return responseSuccess(res, 200, 'Successfully login', user);
+        } else {
+            return responseError(res, 404, 'Not a valid user');
+        }
     } catch (err) {
         next(err);
     }
