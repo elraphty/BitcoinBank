@@ -8,12 +8,16 @@ import { AxiosResponse } from 'axios';
 import { BlockResult } from './interfaces/blocks';
 import { addressType } from './interfaces/addresses';
 import { responseError } from './helpers';
+import { getReceived } from './services/cron';
 
-// walletCheck();
+walletCheck();
+getReceived();
 
 // bitrpc.getWalletBalance('raphwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
 
-// bitrpc.getBlockHash(1).then((res: AxiosResponse) => console.log('Get Block Hash Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
+// bitrpc.wallet.getTransactions('hotwallet').then((res: AxiosResponse) => console.log('Get Wallet Transaction Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
+
+// bitrpc.getBlockHash(1).then((res: AxiosResponse) => console.log('Get Block Hash Result ===', res.data.result)).catch(e => console.log('Get Blockhasßh Errror', e.message));
 
 // bitrpc.getBlock('586604a345c2ac49491ffe63f045cb15d4cc64b2d2ab3055672562e05d4c09c8')
 //     .then((res: AxiosResponse) => {

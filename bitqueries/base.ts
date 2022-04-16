@@ -63,5 +63,8 @@ export default class QueryBase extends Auth {
     getWalletBalance(name: string): Promise<AxiosResponse> {
         return this.wallet.getWalletBalance(name);
     }
+    getTransactions(name: string): Promise<AxiosResponse> {
+        return this.wallet.getTransactions(name);
+    }
     /** End Of Wallet Queries */
 }
