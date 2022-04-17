@@ -7,7 +7,7 @@ export interface User {
 
 export interface UserAddress {
     id?: number;
-    userid: number;
+    userid?: number;
     receiveaddress: string;
 }
 export interface UserBalance {

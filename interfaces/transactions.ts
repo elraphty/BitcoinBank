@@ -34,7 +34,11 @@ interface TransactionDetails {
 };
 
 export interface TransactionResult {
+    address: string;
+    category: string;
     amount: number;
+    label: string;
+    vout: number;
     confirmations: number;
     generated: boolean;
     blockhash: string;
@@ -46,8 +50,6 @@ export interface TransactionResult {
     time: number;
     timereceived: number;
     'bip125-replaceable': string;
-    details: TransactionDetails;
-    hex: string;
 }
 
 export interface RawTransaction {
