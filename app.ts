@@ -17,6 +17,8 @@ try {
     console.log('Error ===', (err as Error).message);
 }
 
+// bitrpc.createTransaction('hotwallet', 'tb1qm6x3lgdjemat00xjep4zf6ppkttpudg3jh8wtt', 0.0001).then((res: AxiosResponse) => console.log('Transaction Success ===', res.data.result)).catch(e => console.log('Transaction Error', e.message));
+
 // bitrpc.getWalletBalance('raphwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
 
 // bitrpc.wallet.getTransactions('hotwallet').then((res: AxiosResponse) => console.log('Get Wallet Transaction Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));
