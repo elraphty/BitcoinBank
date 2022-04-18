@@ -9,7 +9,6 @@ import { BlockResult } from './interfaces/blocks';
 import { addressType } from './interfaces/addresses';
 import { responseError } from './helpers';
 import { getReceived } from './services/cron';
-import { User } from './interfaces/db';
 
 try {
     walletCheck();
