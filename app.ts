@@ -1,4 +1,4 @@
-import express, { Application, Response, Request, NextFunction } from 'express';
+import express, { Application, Response, Request, NextFunction, Errback } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import routes from './routes';
@@ -11,13 +11,11 @@ import { responseError } from './helpers';
 import { getReceived } from './services/cron';
 import { User } from './interfaces/db';
 
-walletCheck();
-getReceived();
-
-declare module 'express-session' {
-    interface SessionData {
-        user: User;
-    }
+try {
+    walletCheck();
+    getReceived();
+} catch (err) {
+    console.log('Error ===', (err as Error).message);
 }
 
 // bitrpc.getWalletBalance('raphwallet').then((res: AxiosResponse) => console.log('Get Wallet Balance Result ===', res.data.result)).catch(e => console.log('Get Blockhash Errror', e.message));

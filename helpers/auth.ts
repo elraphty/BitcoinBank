@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { verifyUser } from './jwt';
 import { responseError } from '.';
 import { User } from '../interfaces/db';
+interface TokenData {
+  data: User
+};
 
 export const authUser = (req: Request, res: Response, next: NextFunction) => {
   // check if there is an authorization header
@@ -10,16 +13,21 @@ export const authUser = (req: Request, res: Response, next: NextFunction) => {
 
     const token = req.headers.authorization.substring(7);
   
-    verifyUser(token, (err: string, ans: User) => {
+    verifyUser(token, (err: string, ans: TokenData) => {
       if (err) {
         return responseError(res, 503, 'Not an authorized user');
       }
 
+      const user: User = {
+          id: ans.data.id,
+          username: ans.data.username
+      };
+
       // set user to session
-      // console.log('Ans ===', ans);
-      req.session.user = ans;
+      console.log('Ans ===', user, ans);
+      req.session.user = user;
+
+      return next();
     });
   }
-
-  return next();
 };
