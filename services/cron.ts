@@ -10,8 +10,10 @@ export const getReceived = () => {
         const transactions: TransactionResult[] = await (await bitrpc.getTransactions(wallets[0])).data.result;
 
         transactions.forEach(async trans => {
-            // If the transaction has 3 confirmations
+            // If the transaction has 2 confirmations
+            console.log('Transactions', trans);
             if (trans.confirmations === 2) {
+                console.log('Two confirmations', trans);
                 const userAddress: string = trans.address;
 
                 // Get the user with the address, if the uset is existent update their balance 

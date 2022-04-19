@@ -32,6 +32,9 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
 
     const amtToDeduct = amount + feerate;
 
+    // Set transaction fee
+    await bitrpc.setTransactionFee('hotwallet', feerate);
+
     bitrpc.createTransaction('hotwallet', recipient, amount)
         .then(async (tranRes) => {
             const txid: string = tranRes.data.result;

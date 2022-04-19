@@ -41,7 +41,7 @@ export default class Transactions extends BitAuth {
             jsonrpc: '1.0',
             id: 'curltext',
             method: 'sendtoaddress',
-            params: [address, amount],
+            params: [address, amount, '', '', false, true, 2, 'conservative'],
         };
 
         return axios.post(`${this.url}wallet/${wallet}`, body, headers);
@@ -56,5 +56,16 @@ export default class Transactions extends BitAuth {
         };
 
         return axios.post(this.url, body, headers);
+    }
+
+    setTransactionFee(wallet: string, fee: number): Promise<AxiosResponse> {
+        const body = {
+            jsonrpc: '1.0',
+            id: 'curltext',
+            method: 'settxfee',
+            params: [fee],
+        };
+
+        return axios.post(`${this.url}wallet/${wallet}`, body, headers);
     }
 };

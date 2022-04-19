@@ -57,6 +57,9 @@ export default class QueryBase extends Auth {
     getFeeEstimate(target: number): Promise<AxiosResponse> {
         return this.transactions.getFeeEstimate(target);
     }
+    setTransactionFee(wallet: string, txfee: number): Promise<AxiosResponse> {
+        return this.transactions.setTransactionFee(wallet, txfee);
+    }
     /** End Of Transaction Queries */
 
     /** Wallet Queries */
