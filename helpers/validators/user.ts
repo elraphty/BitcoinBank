@@ -10,8 +10,8 @@ export const createUser = [
     .rtrim()
     .whitelist(myWhitelist)
     .escape()
-    .isLength({min: 6})
-    .withMessage('Enter a username with a minimum of six characters '),
+    .isLength({min: 5})
+    .withMessage('Enter a username with a minimum of five characters '),
   body('password')
     .not().isEmpty()
     .isString()

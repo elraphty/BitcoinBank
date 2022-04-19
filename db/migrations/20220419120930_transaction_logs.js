@@ -7,11 +7,10 @@
       t.increments('id').primary().notNullable();
       t.integer('userid')
         .notNullable()
-        .unique()
         .references('id')
         .inTable('users');
-      t.decimal('amount').notNullable();
-      t.text('txid').notNullable();
+      t.float('amount').notNullable();
+      t.text('txid').notNullable().unique();
       t.integer('confirmations').notNullable();
       t.enum('type', ['send', 'receive']).notNullable();
       t.enum('status', [1, 0]).notNullable().defaultTo(0);

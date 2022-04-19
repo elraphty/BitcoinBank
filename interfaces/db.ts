@@ -14,3 +14,12 @@ export interface UserBalance {
     userid: number;
     amount: number;
 }
+
+export interface TransactionLogs {
+    id?: number;
+    amount: number;
+    txid: string;
+    status: number;
+    type: string;
+    confirmations: number;
+}
