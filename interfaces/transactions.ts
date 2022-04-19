@@ -36,6 +36,10 @@ interface TransactionDetails {
 export interface TransactionResult {
     address: string;
     category: string;
+    fee: number;
+    details?: {
+        fee: number;
+    };
     amount: number;
     label: string;
     vout: number;

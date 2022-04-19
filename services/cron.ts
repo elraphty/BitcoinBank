@@ -4,7 +4,7 @@ import knex from '../db';
 import { TransactionLogs, UserAddress, UserBalance } from '../interfaces/db';
 
 export const getReceived = () => {
-    setInterval(async () => {
+    return setInterval(async () => {
         const transactions: TransactionResult[] = await (await bitrpc.getTransactions('hotwallet')).data.result;
 
         transactions.forEach(async trans => {
@@ -61,5 +61,5 @@ export const getReceived = () => {
                 }
             }
         });
-    }, 1000 * 60);
+    }, 1000 * 60 * 10);
 }
