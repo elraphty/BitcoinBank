@@ -1,4 +1,4 @@
-import express, { Application, Response, Request, NextFunction, Errback } from 'express';
+import express, { Application, Response, Request, NextFunction } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import routes from './routes';

@@ -1,4 +1,4 @@
-import { getReceived, checkWalletBalances } from "./functions";
+import { getReceived, checkWalletBalances } from "./cronfunctions";
 
 export const cron = () => {
     setInterval(async () => {

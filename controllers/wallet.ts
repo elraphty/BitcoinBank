@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
 import knex from '../db';
 import { validationResult } from 'express-validator';
 import { responseSuccess, responseErrorValidation, responseError } from '../helpers';
@@ -8,6 +9,11 @@ import bitrpc from '../bitqueries';
 import axios from 'axios';
 import { TransactionResult } from '../interfaces/transactions';
 
+dotenv.config();
+
+const baseFee = Number(process.env.BASE_FEE);
+
+// Create a transaction with one percent transaction fee
 export const createTransaction = async (req: Request, res: Response, next: NextFunction) => {
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
@@ -15,9 +21,9 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
         return responseErrorValidation(res, 400, errors.array());
     }
 
-    const amount: number = Number(req.body.amount);
+    const amount: number = req.body.amount;
     const recipient: string = req.body.recipient;
-
+    const transactionFee: number = Math.floor(amount * 1 / 100);
 
     const reqUser = req as RequestUser;
 
@@ -29,7 +35,16 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
     // Get user balance
     const userBalance = await knex<UserBalance>('usersbalance').where({ userid: userId }).first();
 
-    const total = feerate + Number(userBalance?.amount);
+    // Get last transaction in transaction logs
+    const lastTransaction = await knex<TransactionLogs>('transactionlogs').orderBy('id', 'desc').limit(1);
+
+    // Get the fee for the last transaction
+    const getLastTransaction: TransactionResult = await (await bitrpc.getTransaction(lastTransaction[0].txid, 'hotwallet')).data?.result;
+
+    // If last transaction fee, set the lastfee to last transaction fee else base fee
+    const lastFee: number = getLastTransaction?.fee ? getLastTransaction.fee : baseFee;
+
+    const total = Number(userBalance?.amount) + lastFee;
 
     /*** If the users balance is not greater than the amount plus fee estimates don't send */
     if (amount > total) {
@@ -44,7 +59,7 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
             const transReq = await bitrpc.getTransaction(txid, 'hotwallet');
             const transaction: TransactionResult = transReq.data.result;
 
-            const amtToDeduct = amount + Number(transaction.fee);
+            const amtToDeduct = amount + transactionFee + Number(transaction.fee);
 
             await knex<UserBalance>('usersbalance').update({ amount: knex.raw(`amount - ${amtToDeduct}`) }).where({ userid: userId });
 
