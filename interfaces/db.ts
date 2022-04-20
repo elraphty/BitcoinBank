@@ -21,5 +21,5 @@ export interface TransactionLogs {
     txid: string;
     status: number;
     type: string;
-    confirmations: number;
+    userid?: number;
 }

@@ -1,4 +1,4 @@
-import { Axios, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import bitrpc from '../bitqueries';
 
 /** Check if the node has up to 2 wallets if not create them */

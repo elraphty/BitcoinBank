@@ -11,7 +11,6 @@
         .inTable('users');
       t.float('amount').notNullable();
       t.text('txid').notNullable().unique();
-      t.integer('confirmations').notNullable();
       t.enum('type', ['send', 'receive']).notNullable();
       t.enum('status', [1, 0]).notNullable().defaultTo(0);
     });

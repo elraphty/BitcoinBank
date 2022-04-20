@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import knex from '../db';
 import { validationResult } from 'express-validator';
 import { responseSuccess, responseErrorValidation, responseError } from '../helpers';
-import { UserBalance } from '../interfaces/db';
+import { TransactionLogs, UserBalance } from '../interfaces/db';
 import { RequestUser } from '../interfaces';
 import bitrpc from '../bitqueries';
 import axios from 'axios';
@@ -21,6 +21,7 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
 
     const reqUser = req as RequestUser;
 
+    // Get fee from memspace signet api
     const feesReq = await axios.get('https://mempool.space/signet/api/v1/fees/recommended');
     const feerate = feesReq.data.fastestFee;
     const userId = reqUser.user.id;
@@ -46,6 +47,15 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
             const amtToDeduct = amount + Number(transaction.fee);
 
             await knex<UserBalance>('usersbalance').update({ amount: knex.raw(`amount - ${amtToDeduct}`) }).where({ userid: userId });
+
+            // insert in the transaction logs
+            await knex<TransactionLogs>('transactionlogs').insert({
+                amount: amount,
+                txid: txid,
+                status: 1,
+                type: 'send',
+                userid: userId
+            });
 
             responseSuccess(res, 200, 'Successfully sent transaction', { txid });
         })

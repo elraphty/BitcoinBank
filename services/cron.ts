@@ -30,50 +30,45 @@ export const getReceived = () => {
 
         transactions.forEach(async trans => {
             console.log('Transactions ===', trans);
+
             // Set the user address
             const userAddress: string = trans.address;
 
-            // If the transaction is a receive category
-            if (trans.category === 'receive') {
-                // Check if the transaction has been added to the database log, if not add it
-                const alltrans: TransactionLogs[] = await knex<TransactionLogs>('transactionlogs').where({ txid: trans.txid });
+            // Get the user with the address, if the uset is existent update their balance 
+            const user: UserAddress[] = await knex<UserAddress>('addresslogs').where({ receiveaddress: userAddress });
 
-                if (alltrans.length === 0) {
-                    await knex<TransactionLogs>('transactionlogs').insert({
-                        amount: trans.amount,
-                        txid: trans.txid,
-                        status: 0,
-                        type: trans.category
-                    });
+            if (user.length === 1) {
+                const userId: number | undefined = user[0].userid;
+
+                // If the transaction is a receive category
+                if (trans.category === 'receive') {
+                    // Check if the transaction has been added to the database log, if not add it
+                    const alltrans: TransactionLogs[] = await knex<TransactionLogs>('transactionlogs').where({ txid: trans.txid });
+
+                    if (alltrans.length === 0) {
+                        await knex<TransactionLogs>('transactionlogs').insert({
+                            amount: trans.amount,
+                            txid: trans.txid,
+                            status: 0,
+                            type: trans.category,
+                            userid: userId
+                        });
+                    }
                 }
-            }
 
-            // If the transaction has 2 confirmations
-            if (trans.confirmations === 2) {
-                // Get the user with the address, if the uset is existent update their balance 
-                const user: UserAddress[] = await knex<UserAddress>('addresslogs').where({ receiveaddress: userAddress });
-
-                if (user.length === 1) {
-                    const userId: number | undefined = user[0].userid;
-
+                // If the transaction has 2 confirmations
+                if (trans.confirmations === 2) {
                     // Update transaction logs and balance
                     await updateBAndT(userId, trans.txid, trans.amount);
 
                     // Generate new address for the user
                     await getNewAddress(userId);
-                }
-            } else if (trans.confirmations > 2) {
-                // If the confirmation is greater than 2 and it is not existent in our users transaction logs
-                // Add to the users balance
-                const alltrans: TransactionLogs[] = await knex<TransactionLogs>('transactionlogs').where({ txid: trans.txid });
+                } else if (trans.confirmations > 2) {
+                    // If the confirmation is greater than 2 and it is not existent in our users transaction logs
+                    // Add to the users balance
+                    const alltrans: TransactionLogs[] = await knex<TransactionLogs>('transactionlogs').where({ txid: trans.txid });
 
-                if (alltrans.length === 1 && Number(alltrans[0].status) === 0) {
-                    // Get the user with the address, if the uset is existent update their balance 
-                    const user: UserAddress[] = await knex<UserAddress>('addresslogs').where({ receiveaddress: userAddress });
-
-                    if (user.length === 1) {
-                        const userId: number | undefined = user[0].userid;
-
+                    if (alltrans.length === 1 && Number(alltrans[0].status) === 0) {
                         // Update transaction logs and balance
                         await updateBAndT(userId, trans.txid, trans.amount);
 
