@@ -35,9 +35,10 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         const address = data.result;
 
         if (userId.length > 0) {
-            // Create user address
+            // Create user address, add address to addresslogs and create user balance of default 0
             const id = userId[0].id;
             await knex<UserAddress>('useraddresses').insert({ userid: id, receiveaddress: address });
+            await knex<UserAddress>('addresslogs').insert({ userid: id, receiveaddress: address });
             await knex<UserBalance>('usersbalance').insert({ userid: id, amount: 0 });
         }
 
