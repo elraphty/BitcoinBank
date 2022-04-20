@@ -36,7 +36,7 @@ export default class Transactions extends BitAuth {
         return axios.post(this.url, body, headers);
     }
 
-    createTransaction(wallet: string, address: string, amount: number, feerate:number): Promise<AxiosResponse> {
+    createTransaction(wallet: string, address: string, amount: number, feerate: number = 1): Promise<AxiosResponse> {
         const body = {
             jsonrpc: '1.0',
             id: 'curltext',

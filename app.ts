@@ -8,11 +8,11 @@ import { AxiosResponse } from 'axios';
 import { BlockResult } from './interfaces/blocks';
 import { addressType } from './interfaces/addresses';
 import { responseError } from './helpers';
-import { getReceived } from './services/cron';
+import { cron } from './services/cron';
 
 try {
     walletCheck();
-    getReceived();
+    cron();
 } catch (err) {
     console.log('Error ===', (err as Error).message);
 }
