@@ -3,21 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import routes from './routes';
 import { walletCheck } from './services/wallet';
-import bitrpc from './bitqueries';
-import { AxiosResponse } from 'axios';
-import { BlockResult } from './interfaces/blocks';
-import { addressType } from './interfaces/addresses';
 import { responseError } from './helpers';
 import { cron } from './services/cron';
-
-try {
-    walletCheck();
-    cron();
-} catch (err) {
-    console.log('Error ===', (err as Error).message);
-}
-
-// bitrpc.createTransaction('hotwallet', 'tb1qm6x3lgdjemat00xjep4zf6ppkttpudg3jh8wtt', 0.0001).then((res: AxiosResponse) => console.log('Transaction Success ===', res.data.result)).catch(e => console.log('Transaction Error', e));
 
 const app: Application = express();
 
@@ -29,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Router files
 app.use('/', routes);
 
-// Error handler
+// Base error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
     if (err) {
         res.locals.message = err.message;
@@ -38,5 +25,13 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
         responseError(res, 500, err.message);
     }
 });
+
+try {
+    walletCheck();
+    cron();
+} catch (err) {
+    // Log error
+    console.log('Error ===', (err as Error).message);
+}
 
 export default app;

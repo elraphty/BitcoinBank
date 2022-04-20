@@ -11,7 +11,8 @@ import { TransactionResult } from '../interfaces/transactions';
 
 dotenv.config();
 
-const baseFee = Number(process.env.BASE_FEE);
+const baseFee = process.env.BASE_FEE ? Number(process.env.BASE_FEE) : 0.00000200;
+const feePercent = process.env.FEE_PERCENT ? Number(process.env.FEE_PERCENT) : 1;
 
 // Create a transaction with one percent transaction fee
 export const createTransaction = async (req: Request, res: Response, next: NextFunction) => {
@@ -20,17 +21,18 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
     if (!errors.isEmpty()) {
         return responseErrorValidation(res, 400, errors.array());
     }
+    
+    const reqUser = req as RequestUser;
+    const userId = reqUser.user.id;
 
     const amount: number = req.body.amount;
     const recipient: string = req.body.recipient;
-    const transactionFee: number = Math.floor(amount * 1 / 100);
+    const transactionFee: number = Math.floor(amount * feePercent / 100);
 
-    const reqUser = req as RequestUser;
 
     // Get fee from memspace signet api
     const feesReq = await axios.get('https://mempool.space/signet/api/v1/fees/recommended');
     const feerate = feesReq.data.fastestFee;
-    const userId = reqUser.user.id;
 
     // Get user balance
     const userBalance = await knex<UserBalance>('usersbalance').where({ userid: userId }).first();
