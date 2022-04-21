@@ -25,10 +25,9 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
     const reqUser = req as RequestUser;
     const userId = reqUser.user.id;
 
-    const amount: number = req.body.amount;
+    const amount: number = Number(req.body.amount);
     const recipient: string = req.body.recipient;
     const transactionFee: number = Math.floor(amount * feePercent / 100);
-
 
     // Get fee from memspace signet api
     const feesReq = await axios.get('https://mempool.space/signet/api/v1/fees/recommended');

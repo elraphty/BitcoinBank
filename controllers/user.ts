@@ -106,3 +106,24 @@ export const userBalance = async (req: Request, res: Response, next: NextFunctio
         next(err);
     }
 };
+
+// Controller user address
+export const userAddress = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        // Finds the validation errors in this request and wraps them in an object with handy functions
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return responseErrorValidation(res, 400, errors.array());
+        }
+
+        const reqUser = req as RequestUser;
+        const userId = reqUser.user.id;
+
+        const userAddress: UserAddress[] = await knex<UserAddress>('useraddresses').where({ userid: userId});
+
+        return responseSuccess(res, 200, 'Successfully return user balance', userAddress[0].receiveaddress);
+       
+    } catch (err) {
+        next(err);
+    }
+};

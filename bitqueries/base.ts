@@ -52,7 +52,7 @@ export default class QueryBase extends Auth {
         return this.transactions.decodeRawTransaction(transactionHex);
     }
     createTransaction(wallet: string, address: string, amount: number, feerate: number = 1): Promise<AxiosResponse> {
-        return this.transactions.createTransaction(wallet, address, amount, feerate);
+        return this.transactions.createTransaction(wallet, address, Number(amount.toFixed(8)), feerate);
     }
     getFeeEstimate(target: number): Promise<AxiosResponse> {
         return this.transactions.getFeeEstimate(target);
