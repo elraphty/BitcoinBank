@@ -31,7 +31,7 @@ try {
     cron();
 } catch (err) {
     // Log error
-    console.log('Error ===', (err as Error).message);
+    console.log('App Error ===', (err as Error).message);
 }
 
 export default app;

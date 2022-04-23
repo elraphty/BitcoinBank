@@ -21,7 +21,7 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
     if (!errors.isEmpty()) {
         return responseErrorValidation(res, 400, errors.array());
     }
-    
+
     const reqUser = req as RequestUser;
     const userId = reqUser.user.id;
 
@@ -78,4 +78,21 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
         .catch((e) => {
             return responseError(res, 403, 'Could not send transaction');
         });
+}
+
+// Create a transaction with one percent transaction fee
+export const listTransactions = async (req: Request, res: Response, next: NextFunction) => {
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return responseErrorValidation(res, 400, errors.array());
+    }
+
+    const reqUser = req as RequestUser;
+    const userId = reqUser.user.id;
+
+    // list user transactions
+    const transactions = await knex<TransactionLogs>('transactionlogs').where({ userid: userId });
+
+    responseSuccess(res, 200, 'Successfully listed transaction', { transactions });
 }
