@@ -8,6 +8,7 @@ import bitqueries from '../bitqueries';
 import { addressType } from '../interfaces/addresses';
 import { signUser } from '../helpers/jwt';
 import { RequestUser } from '../interfaces';
+import { hotwalletname } from '../config';
 
 // Controller for registering user
 export const registerUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
@@ -31,8 +32,8 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         const password: string = hashPassword(pass);
 
         const userId = await knex<User>('users').insert({ username, password }).returning('id');
-
-        const { data } = await bitqueries.getNewAddress('useraddress', addressType.bech32, 'hotwallet');
+    
+        const { data } = await bitqueries.getNewAddress('useraddress', addressType.bech32, hotwalletname);
         const address = data.result;
 
         if (userId.length > 0) {

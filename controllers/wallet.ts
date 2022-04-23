@@ -8,6 +8,7 @@ import { RequestUser } from '../interfaces';
 import bitrpc from '../bitqueries';
 import axios from 'axios';
 import { TransactionResult } from '../interfaces/transactions';
+import { hotwalletname } from '../config';
 
 dotenv.config();
 
@@ -40,7 +41,7 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
     const lastTransaction = await knex<TransactionLogs>('transactionlogs').orderBy('id', 'desc').limit(1);
 
     // Get the fee for the last transaction
-    const getLastTransaction: TransactionResult = await (await bitrpc.getTransaction(lastTransaction[0].txid, 'hotwallet')).data?.result;
+    const getLastTransaction: TransactionResult = await (await bitrpc.getTransaction(lastTransaction[0].txid, hotwalletname)).data?.result;
 
     // If last transaction fee, set the lastfee to last transaction fee else base fee
     const lastFee: number = getLastTransaction?.fee ? getLastTransaction.fee : baseFee;
@@ -52,12 +53,12 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
         return responseError(res, 403, 'Top up your balance');
     }
 
-    bitrpc.createTransaction('hotwallet', recipient, amount, feerate)
+    bitrpc.createTransaction(hotwalletname, recipient, amount, feerate)
         .then(async (tranRes) => {
             const txid: string = tranRes.data.result;
             // Update the User's Balance with the transaction amount
 
-            const transReq = await bitrpc.getTransaction(txid, 'hotwallet');
+            const transReq = await bitrpc.getTransaction(txid, hotwalletname);
             const transaction: TransactionResult = transReq.data.result;
 
             const amtToDeduct = amount + transactionFee + Number(transaction.fee);

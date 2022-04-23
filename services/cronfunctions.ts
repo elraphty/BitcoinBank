@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import knex from '../db';
 import { TransactionLogs, UserAddress, UserBalance } from '../interfaces/db';
 import { addressType } from '../interfaces/addresses';
+import { coldwalletname, hotwalletname } from '../config';
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const noOfCon = Number(process.env.NO_OF_CONFIRMATIONS);
 // Generate a new address
 const getNewAddress = async (userId: number | undefined) => {
     try {
-        const { data } = await bitrpc.getNewAddress('useraddress', addressType.bech32, 'hotwallet');
+        const { data } = await bitrpc.getNewAddress('useraddress', addressType.bech32, hotwalletname);
         const address = data.result;
 
         // Update user address
@@ -41,7 +42,7 @@ const updateBAndT = async (userId: number | undefined, txid: string, amount: num
 
 export const getReceived = async () => {
     try {
-        const transactions: TransactionResult[] = await (await bitrpc.getTransactions('hotwallet')).data.result;
+        const transactions: TransactionResult[] = await (await bitrpc.getTransactions(hotwalletname)).data.result;
 
         transactions.forEach(async trans => {
             // Set the user address
@@ -101,8 +102,8 @@ export const checkWalletBalances = async () => {
         const coldWallet: number = 80;
         const hotWallet: number = 20;
 
-        const hotBalReq = await bitrpc.getWalletBalance('hotwallet');
-        const coldBalReq = await bitrpc.getWalletBalance('coldwallet');
+        const hotBalReq = await bitrpc.getWalletBalance(hotwalletname);
+        const coldBalReq = await bitrpc.getWalletBalance(coldwalletname);
 
         // Wallet Balances
         const hotBalance: number = hotBalReq.data?.result;
@@ -122,7 +123,7 @@ export const checkWalletBalances = async () => {
             const amountToWithdraw: number = hotBalance * perToWithdraw / hotPercentage;
 
             // Get new coldwallet address
-            const { data } = await bitrpc.getNewAddress('coldaddress', addressType.bech32, 'coldwallet');
+            const { data } = await bitrpc.getNewAddress('coldaddress', addressType.bech32, coldwalletname);
             const address = data.result;
 
             // Send amount to cold wallet address
@@ -134,7 +135,7 @@ export const checkWalletBalances = async () => {
             const amountToWithdraw: number = coldBalance * perToWithdraw / coldPercentage;
 
             // Get new hotwallet address
-            const { data } = await bitrpc.getNewAddress('hotaddress', addressType.bech32, 'hotwallet');
+            const { data } = await bitrpc.getNewAddress('hotaddress', addressType.bech32, hotwalletname);
             const address = data.result;
 
             // Send amount to hot wallet address
