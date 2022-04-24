@@ -18,18 +18,18 @@
 
  - When u create a user using the api/v1/user/register endpoint it creates a new segwit user to the database table
 
- - Oubound transactions uses Bitcoin's JSON RPC ```sendtoaddress``` command to create and broadcast a transaction
+ - Outbound transactions uses Bitcoin's JSON RPC ```sendtoaddress``` command to create and broadcast a transaction
 
- - Inbound Transactions are checked every 10 mins (Bitcoins new block arrival time) after the confiramtion meets 
+ - Inbound Transactions are checked every 10 mins (Bitcoin's block time) after the confirmation meets 
    the confirmation count specified in the .env it updates the user's balance and create a new address for them
 
 ## How to Run
 
- - Clone the project
+ - Clone the project ```git clone https://github.com/elraphty/BitcoinBank.git```
  - Run ```npm install```
  - Install knex globally ```npm install knex -g```
  - Start your Bitcoin Core node by running  ```bitcoind``` in your termainal
- - Confirm if your node is running usisng ```bitcoin-cli -getinfo``` command
+ - Confirm if your node is running using ```bitcoin-cli -getinfo``` command
  - Create a .env file copy the variables in .env_sample file paste them in ur newly created .env file and update the values
  - Migrate Database schemas by running ```knex migrate:latest```
  - Run ```npm run dev``` in the project folder
@@ -41,7 +41,7 @@
  - POST /api/v1/user/login = User login
  - GET /api/v1/user/address = Get user bitcoin segwit address for inbound transactions
  - GET /api/v1/user/balance = Get user bitcoin balance
- - POST /api/v1/wallet/createtransaction = Create Outbound transaction
+ - POST /api/v1/wallet/createtransaction = Create outbound transaction
  - GET /api/v1/wallet/transactions = Get user transactions
 
 
