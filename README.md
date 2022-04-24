@@ -36,12 +36,12 @@
 
 ## API ROUTES
 
- - GET /api/v1 = Base Route
- - POST /api/v1/user/register = Register lser
+ - GET /api/v1 = Base route
+ - POST /api/v1/user/register = Register a user, create a Segwit bech32 address for the user, and create a user default balance of 0 bitcoin
  - POST /api/v1/user/login = User login
  - GET /api/v1/user/address = Get user bitcoin segwit address for inbound transactions
  - GET /api/v1/user/balance = Get user bitcoin balance
- - POST /api/v1/wallet/createtransaction = Create outbound transaction
+ - POST /api/v1/wallet/createtransaction = Create an outbound transaction, and update the user's balance
  - GET /api/v1/wallet/transactions = Get user transactions
 
 
