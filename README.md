@@ -11,7 +11,7 @@
 
  - This project works with 2 bitcoin wallets: a cold and hotwallet, ideally the cold wallet is supposed 
    to be a coldstorage  but for the purpose of this project we will use 2 Bitcoin core wallets.
-   When you run the project ```npm run dev``` it checks for the amount of wallets on your node if none it creates 2 wallets named coldwallet, and hotwallet, if one wallet is available it creates one wallet named hotwallet. You can set the wallet names in the .env ```HOTWALLETNAME= COLDWALLETNAME=``` file if you have wallets already on your node and they are not named coldwallet and hotwallet.
+   When you run the project ```npm run dev``` it checks for the number of wallets on your node if none it creates 2 wallets named coldwallet, and hotwallet, if one wallet is available it creates one wallet named hotwallet. You can set the wallet names in the .env ```HOTWALLETNAME= COLDWALLETNAME=``` file if you have wallets already on your node and they are not named coldwallet and hotwallet.
     
  - Every 1 hour a check is done to make sure the hotwallet has 20% of the total funds while the rest of the 
    80% is in the cold wallet, if the hotwallet has more than 20% the amount of the percentage excess will be transferred to the cold wallet, also if the coldwallet has 80% the amount of the percentage that exceeds 80% will be transferred to the hotwallet
